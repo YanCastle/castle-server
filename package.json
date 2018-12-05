@@ -1,8 +1,12 @@
 {
   "name": "castle-server",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "",
-  "main": "index.js",
+  "main": "dist/index.js",
+  "files": [
+    "dist/**/*.js",
+    "dist/**/*.d.ts"
+  ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -18,6 +22,15 @@
   },
   "homepage": "https://github.com/YanCastle/castle-server#readme",
   "dependencies": {
-    "koa": "^2.6.2"
+    "chokidar": "^2.0.4",
+    "koa": "^2.6.2",
+    "koa-bodyparser": "^4.2.1",
+    "koa2-multiparty": "^1.0.1"
+  },
+  "devDependencies": {
+    "@types/chokidar": "^1.7.5",
+    "@types/koa": "^2.0.47",
+    "@types/koa-bodyparser": "^4.2.1",
+    "@types/node": "^10.12.10"
   }
 }
