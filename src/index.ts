@@ -5,47 +5,55 @@ import { body, multi } from './use/parse';
 import outcheck from './use/outcheck';
 import { WatchType, watch } from './utils/index';
 import { resolve } from 'path';
-const koa = new Koa()
-koa.use(outcheck)
-//配置文件
-koa.use(config)
-//body
-koa.use(body)
-//文件上传
-koa.use(multi)
+Date.prototype.toJSON = function () { return this.toLocaleString(); }
 class CastleServer {
-    get Koa() { return koa; }
+    _koa: Koa = new Koa()
+    constructor() {
+        this._koa.on('error', this.error)
+    }
+    _default: boolean = false;
+    default() {
+        this._default = true;
+        this._koa.use(outcheck)
+        //配置文件
+        this._koa.use(config)
+        //body
+        this._koa.use(body)
+        //文件上传
+        this._koa.use(multi)
+    }
+    get Koa() { return this._koa; }
+    error(error: any) {
+        console.error(error)
+    }
     /**
      * 启动服务
      * @param Port 
      */
     start(Port: number) {
-        watch(['./dist/**/*.js'], [WatchType.Unlink, WatchType.Change, WatchType.Delete], (d) => {
-            if (require.cache[resolve(d)]) {
-                console.log(`File ${d} changed,deleted cache`)
-                delete require.cache[resolve(d)]
-            }
-        })
-        return koa.listen(Port);
+        return this._koa.listen(Port);
     }
     /**
      * 注册中间件
      * @param m 
      */
     use(m: (ctx: Context, next: Function) => any) {
-        koa.use(m);
+        this._koa.use(m);
     }
     /**
      * 安装插件，支持插件模式
      * @param plugin 
      */
-    install(plugin: { install: Function }) {
+    install(plugin: { install: (that: CastleServer, koa: Koa, config: any) => any }, config: any = {}) {
+        if (!this._default) {
+            this.default()
+        }
         if ('function' == typeof plugin.install) {
-            plugin.install(this, koa)
+            plugin.install(this, this._koa, config)
         }
     }
-    watch(file: string | string[], type: WatchType[]) {
-        // watch(file, type)
+    watch(file: string[], type: WatchType[], cb: Function | any) {
+        watch(file, type, cb)
     }
 
 }
