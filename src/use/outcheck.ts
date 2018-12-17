@@ -5,6 +5,7 @@ export default async function outcheck(ctx: Context, next: Function) {
     } catch (error) {
         ctx.error = error;
     } finally {
-        ctx.body = await ctx.config.outcheck(ctx);
+        if (ctx.config && !ctx.config.sendFile)
+            ctx.body = ctx.config && ctx.config.outcheck ? await ctx.config.outcheck(ctx) : { c: ctx.status, d: ctx.body, i: '', e: 'Not Found' };
     }
 }
