@@ -1,17 +1,9 @@
 import { Context } from 'koa';
 export default async function cors(ctx: Context, next: Function) {
-    //TODO 动态加载配置文件完成
-    if (ctx.method == 'OPTIONS') {
+    if (['OPTIONS', "POST"].indexOf(ctx.method) > -1 && await ctx.config.allowCORS()) {
         corsset(ctx)
-        ctx.body = "";
-    } else if (ctx.method == "POST") {
-        if (await ctx.config.allowCORS()) {
-            await next();
-            corsset(ctx)
-        }
-    } else {
-        next();
     }
+    await next();
 }
 function corsset(ctx: Context) {
     ctx.set('Access-Control-Allow-Origin', ctx.header.origin);
