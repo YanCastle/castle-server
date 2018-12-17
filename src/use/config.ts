@@ -14,7 +14,7 @@ var exist_files: string[] = [];
             exist_files.push(file[i])
         }
     }
-})
+})()
 export async function config(ctx: Context, next: Function) {
     let ConfigFile = env.CONFIG_FILE;
     if (!ConfigFile) {
