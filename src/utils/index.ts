@@ -35,9 +35,11 @@ export enum WatchType {
  * @param Callback 
  */
 export function watch(Path: string[], Type: WatchType[], Callback: (...args: any[]) => void) {
-    let wathcer = chokidar.watch(Path)
-    Type.forEach((d: string) => {
-        wathcer.on(d, Callback)
-    })
-    return wathcer;
+    if (Callback instanceof Function) {
+        let wathcer = chokidar.watch(Path)
+        Type.forEach((d: string) => {
+            wathcer.on(d, Callback)
+        })
+        return wathcer;
+    }
 }
