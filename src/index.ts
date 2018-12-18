@@ -5,6 +5,7 @@ import { body, multi } from './use/parse';
 import outcheck from './use/outcheck';
 import { WatchType, watch } from './utils/index';
 import { resolve } from 'path';
+import cors from './use/cors';
 Date.prototype.toJSON = function () { return this.toLocaleString(); }
 class CastleServer {
     _koa: Koa = new Koa()
@@ -17,6 +18,8 @@ class CastleServer {
         this._koa.use(outcheck)
         //配置文件
         this._koa.use(config)
+        //cors
+        this._koa.use(cors)
         //body
         this._koa.use(body)
         //文件上传
