@@ -1,14 +1,13 @@
 {
-  "name": "castle-server",
-  "version": "1.0.5",
+  "name": "@ctsy/server",
+  "version": "1.0.0",
   "description": "",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
     "dist/**/*.js",
     "dist/**/*.d.ts",
-    "READMD.md",
-    "yarn.lock"
+    "READMD.md"
   ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -25,7 +24,6 @@
   },
   "homepage": "https://github.com/YanCastle/castle-server#readme",
   "dependencies": {
-    "@types/mz": "^0.0.32",
     "chokidar": "^2.0.4",
     "koa": "^2.6.2",
     "koa-bodyparser": "^4.2.1",
@@ -33,9 +31,9 @@
     "mz": "^2.7.0"
   },
   "devDependencies": {
+    "@types/mz": "^0.0.32",
     "@types/chokidar": "^1.7.5",
     "@types/koa": "^2.0.47",
-    "@types/koa-bodyparser": "^4.2.1",
     "@types/node": "^10.12.10"
   }
 }

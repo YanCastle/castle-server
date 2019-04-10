@@ -4,7 +4,6 @@ import { Context } from 'koa';
 import { body, multi } from './use/parse';
 import outcheck from './use/outcheck';
 import { WatchType, watch } from './utils/index';
-import { resolve } from 'path';
 import cors from './use/cors';
 Date.prototype.toJSON = function () { return this.toLocaleString(); }
 class CastleServer {

@@ -1,5 +1,4 @@
-// import * as multiparty from 'koa2-multiparty'
-import * as bodyparser from 'koa-bodyparser'
+const bodyparser: any = require('koa-bodyparser')
 const multiparty: any = require('koa2-multiparty')
 export const multi = multiparty()
 export const body = bodyparser({
