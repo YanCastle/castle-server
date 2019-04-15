@@ -5,10 +5,15 @@ import { body, multi } from './use/parse';
 import outcheck from './use/outcheck';
 import { WatchType, watch } from './utils/index';
 import cors from './use/cors';
+import * as path from 'path'
+const dlog = require('debug')('server')
+const pk = require(path.join(process.cwd(), 'package.json'))
+const upk = require('./package.json');
 Date.prototype.toJSON = function () { return this.toLocaleString(); }
 class CastleServer {
     _koa: Koa = new Koa()
     constructor() {
+        dlog('CastleServer Starting with version : ' + pk.version);
         this._koa.on('error', this.error)
     }
     _default: boolean = false;
@@ -33,6 +38,7 @@ class CastleServer {
      * @param Port 
      */
     start(Port: number) {
+        dlog(upk.name + ' startted at ' + upk.version)
         return this._koa.listen(Port);
     }
     /**
@@ -46,10 +52,11 @@ class CastleServer {
      * 安装插件，支持插件模式
      * @param plugin 
      */
-    install(plugin: { install: (that: CastleServer, koa: Koa, config: any) => any }, config: any = {}) {
+    install(plugin: { install: (that: CastleServer, koa: Koa, config: any) => any, name?: string }, config: any = {}) {
         if (!this._default) {
             this.default()
         }
+        dlog('install plugin:' + plugin.name)
         if ('function' == typeof plugin.install) {
             plugin.install(this, this._koa, config)
         }
