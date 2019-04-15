@@ -7,8 +7,8 @@ import { WatchType, watch } from './utils/index';
 import cors from './use/cors';
 import * as path from 'path'
 const dlog = require('debug')('server')
-const pk = require(path.join(process.cwd(), 'package.json'))
-const upk = require('./package.json');
+const pk = require(path.join(__dirname, '../package.json'))
+const upk = require(process.cwd() + '/package.json');
 Date.prototype.toJSON = function () { return this.toLocaleString(); }
 class CastleServer {
     _koa: Koa = new Koa()
