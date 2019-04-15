@@ -48,6 +48,13 @@ class CastleServer {
     use(m: (ctx: Context, next: Function) => any) {
         this._koa.use(m);
     }
+    _modules: { [index: string]: string } = {};
+    /**
+     * 注册模块
+     */
+    module(prefix: string, path: string) {
+        this._modules[prefix] = path;
+    }
     /**
      * 安装插件，支持插件模式
      * @param plugin 
