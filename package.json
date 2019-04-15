@@ -1,6 +1,6 @@
 {
   "name": "@ctsy/server",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -25,15 +25,16 @@
   "homepage": "https://github.com/YanCastle/castle-server#readme",
   "dependencies": {
     "chokidar": "^2.0.4",
+    "debug": "^4.1.1",
     "koa": "^2.6.2",
     "koa-bodyparser": "^4.2.1",
     "koa2-multiparty": "^1.0.1",
     "mz": "^2.7.0"
   },
   "devDependencies": {
-    "@types/mz": "^0.0.32",
     "@types/chokidar": "^1.7.5",
     "@types/koa": "^2.0.47",
+    "@types/mz": "^0.0.32",
     "@types/node": "^10.12.10"
   }
 }
