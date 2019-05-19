@@ -9,6 +9,7 @@ import * as path from 'path'
 const dlog = require('debug')('server')
 const pk = require(path.join(__dirname, '../package.json'))
 const upk = require(process.cwd() + '/package.json');
+import * as compress from 'koa-compress'
 Date.prototype.toJSON = function () { return this.toLocaleString(); }
 class CastleServer {
     _koa: Koa = new Koa()
@@ -28,6 +29,8 @@ class CastleServer {
         this._koa.use(body)
         //文件上传
         this._koa.use(multi)
+        //压缩
+        this._koa.use(compress())
     }
     get Koa() { return this._koa; }
     error(error: any) {
@@ -52,7 +55,7 @@ class CastleServer {
     /**
      * 注册模块
      */
-    module(prefix: string, path: string) {
+    module(prefix: string, path: string, hooks: { [index: string]: (ctx: any) => Promise<any> } = {}) {
         this._modules[prefix] = path;
     }
     /**
