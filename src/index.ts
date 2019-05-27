@@ -30,7 +30,7 @@ class CastleServer {
         //文件上传
         this._koa.use(multi)
         //压缩
-        this._koa.use(compress())
+        // this._koa.use(compress())
     }
     get Koa() { return this._koa; }
     error(error: any) {
