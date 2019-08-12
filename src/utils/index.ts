@@ -63,6 +63,8 @@ export function get_ctx() {
     }
     return new Promise(async (s, j) => {
         await hook.emit(ServerHook.GetCtx, HookWhen.Before, ctx, {})
-        config(ctx, s)
+        config(ctx, () => {
+            s(ctx)
+        })
     })
 }
