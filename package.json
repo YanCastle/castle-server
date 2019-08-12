@@ -24,6 +24,7 @@
   },
   "homepage": "https://github.com/YanCastle/castle-server#readme",
   "dependencies": {
+    "@ctsy/hook": "^0.0.5",
     "@types/koa-compress": "^2.0.9",
     "chokidar": "^2.0.4",
     "debug": "^4.1.1",

@@ -9,8 +9,13 @@ import * as path from 'path'
 const dlog = require('debug')('server')
 const pk = require(path.join(__dirname, '../package.json'))
 const upk = require(process.cwd() + '/package.json');
-import * as compress from 'koa-compress'
+// import * as compress from 'koa-compress'
+import hook, { HookWhen } from '@ctsy/hook';
 Date.prototype.toJSON = function () { return this.toLocaleString(); }
+export enum ServerHook {
+    Start = "Start",
+    Install = "Install"
+}
 class CastleServer {
     _koa: Koa = new Koa()
     constructor() {
@@ -41,8 +46,12 @@ class CastleServer {
      * @param Port 
      */
     start(Port: number) {
-        dlog(upk.name + ' startted at ' + upk.version)
-        return this._koa.listen(Port);
+        // dlog(upk.name + ' startted at ' + upk.version)
+        console.log(upk.name + ":" + upk.version + ' startted at 0.0.0.0:' + Port)
+        hook.emit(ServerHook.Start, HookWhen.Before, this, { Port });
+        let r = this._koa.listen(Port);
+        hook.emit(ServerHook.Start, HookWhen.After, this, { Port });
+        return;
     }
     /**
      * 注册中间件
@@ -52,6 +61,7 @@ class CastleServer {
         this._koa.use(m);
     }
     _modules: { [index: string]: string } = {};
+    _prefix: { [index: string]: string } = {};
     /**
      * 注册模块
      */
@@ -68,7 +78,9 @@ class CastleServer {
         }
         dlog('install plugin:' + plugin.name)
         if ('function' == typeof plugin.install) {
+            hook.emit(ServerHook.Install, HookWhen.Before, this, plugin);
             plugin.install(this, this._koa, config)
+            hook.emit(ServerHook.Install, HookWhen.After, this, plugin);
         }
     }
     watch(file: string[], type: WatchType[], cb: Function | any) {
