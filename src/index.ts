@@ -14,7 +14,8 @@ import hook, { HookWhen } from '@ctsy/hook';
 Date.prototype.toJSON = function () { return this.toLocaleString(); }
 export enum ServerHook {
     Start = "Start",
-    Install = "Install"
+    Install = "Install",
+    GetCtx = "GetCtx",
 }
 class CastleServer {
     _koa: Koa = new Koa()

@@ -1,5 +1,8 @@
 import { Context } from 'koa';
 import * as chokidar from 'chokidar'
+import { config } from '../use/config';
+import hook, { HookWhen } from '@ctsy/hook';
+import { ServerHook } from '../index';
 /**
  * 设置错误响应
  * @param ctx 
@@ -42,4 +45,24 @@ export function watch(Path: string[], Type: WatchType[], Callback: (...args: any
         })
         return wathcer;
     }
+}
+
+/**
+ * 获取一个空的请求对象
+ */
+export function get_ctx() {
+    let req = { body: {} }, rep = { body: {} };
+    let ctx: any = {
+        body: {},
+        req, request: req,
+        rep, response: rep,
+        state: 200,
+        redirect() { },
+        query: "",
+        host: "",
+    }
+    return new Promise(async (s, j) => {
+        await hook.emit(ServerHook.GetCtx, HookWhen.Before, ctx, {})
+        config(ctx, s)
+    })
 }
