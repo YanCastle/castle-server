@@ -4,6 +4,7 @@ import { response } from "../utils";
 import { resolve, join } from 'path';
 import { exists } from "mz/fs";
 import server from "..";
+import hook, { HookWhen } from '@ctsy/hook';
 var file = [
     resolve(`dist/config/index.js`),
     resolve(`dist/config/${env.NODE_ENV}.js`)
@@ -24,11 +25,12 @@ export async function config(ctx: Context, next: Function) {
     if (['.', '/'].indexOf(ConfigFile.substr(0, 1)) > -1) {
         ConfigFile = resolve(ConfigFile);
     }
+    await hook.emit('config', HookWhen.Before, ctx, {})
     try {
         let config = require(ConfigFile)
         ctx.config = new config.default(ctx);
         ctx.config.ModulesMap = server._modules;
-        await ctx.config.getController()
+        // await ctx.config.getController()
         await next()
     } catch (error) {
         await response(ctx, error, 500);
