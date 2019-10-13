@@ -16,6 +16,8 @@ export enum ServerHook {
     Start = "Start",
     Install = "Install",
     GetCtx = "GetCtx",
+    Outcheck = 'server/outcheck',
+    Config = 'server/config'
 }
 class CastleServer {
     _koa: Koa = new Koa()
