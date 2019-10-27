@@ -7,7 +7,7 @@ import { WatchType, watch } from './utils/index';
 import cors from './use/cors';
 import hook, { HookWhen } from '@ctsy/hook';
 import { exists } from 'mz/fs';
-import { join } from 'path';
+import { join, resolve } from 'path';
 const dlog = require('debug')('server')
 const pk = require(join(__dirname, '../package.json'))
 const upk = require(process.cwd() + '/package.json');
@@ -73,12 +73,9 @@ class CastleServer {
      */
     async module(prefix: string, path: string, hooks: { [index: string]: (ctx: any) => Promise<any> } = {}) {
         this._modules[prefix] = path;
-        if (await exists(join(path, 'lib/hooks.js'))) {
-            try {
-                require(join(path, 'lib/hooks.js'))
-            } catch (error) {
-
-            }
+        let file = join(path, 'lib/hooks.js')
+        if (await exists(file)) {
+            require(resolve(file));
         }
     }
     /**
