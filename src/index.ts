@@ -5,12 +5,12 @@ import { body, multi } from './use/parse';
 import outcheck from './use/outcheck';
 import { WatchType, watch } from './utils/index';
 import cors from './use/cors';
-import * as path from 'path'
-const dlog = require('debug')('server')
-const pk = require(path.join(__dirname, '../package.json'))
-const upk = require(process.cwd() + '/package.json');
-// import * as compress from 'koa-compress'
 import hook, { HookWhen } from '@ctsy/hook';
+import { exists } from 'mz/fs';
+import { join } from 'path';
+const dlog = require('debug')('server')
+const pk = require(join(__dirname, '../package.json'))
+const upk = require(process.cwd() + '/package.json');
 Date.prototype.toJSON = function () { return this.toLocaleString(); }
 export enum ServerHook {
     Start = "Start",
@@ -66,10 +66,20 @@ class CastleServer {
     _modules: { [index: string]: string } = {};
     _prefix: { [index: string]: string } = {};
     /**
-     * 注册模块
+     * 
+     * @param prefix 
+     * @param path 
+     * @param hooks 
      */
-    module(prefix: string, path: string, hooks: { [index: string]: (ctx: any) => Promise<any> } = {}) {
+    async module(prefix: string, path: string, hooks: { [index: string]: (ctx: any) => Promise<any> } = {}) {
         this._modules[prefix] = path;
+        if (await exists(join(path, 'lib/hooks.js'))) {
+            try {
+                require(join(path, 'lib/hooks.js'))
+            } catch (error) {
+
+            }
+        }
     }
     /**
      * 安装插件，支持插件模式
@@ -89,7 +99,6 @@ class CastleServer {
     watch(file: string[], type: WatchType[], cb: Function | any) {
         watch(file, type, cb)
     }
-
 }
 const server = new CastleServer()
 export default server;
