@@ -4,12 +4,13 @@ import { config } from '../use/config';
 import hook, { HookWhen } from '@ctsy/hook';
 import { ServerHook } from '../index';
 /**
- * 设置错误响应
+ * 设置响应
  * @param ctx 
  * @param content 
  * @param httpCode 
  */
-export function response(ctx: Context, content: string | any, httpCode = 200) {
+export function response(ctx: Context, content: string | any, httpCode: number = 200) {
+    ctx.config.sendFile = true;
     ctx.body = content;
     ctx.state = httpCode;
 }

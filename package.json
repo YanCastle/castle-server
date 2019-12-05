@@ -25,15 +25,13 @@
   },
   "homepage": "https://github.com/YanCastle/castle-server#readme",
   "dependencies": {
-    "@ctsy/hook": "^0",
-    "@types/koa-compress": "^2.0.9",
-    "chokidar": "^2",
-    "debug": "^4",
-    "koa": "^2.6",
+    "@ctsy/hook": "^0.0.5",
+    "chokidar": "^3.3.0",
+    "debug": "^4.1.1",
+    "koa": "^2.11.0",
     "koa-bodyparser": "^4.2",
-    "koa-compress": "^3.0",
     "koa2-multiparty": "^1.0",
-    "mz": "^2.7"
+    "mz": "^2.7.0"
   },
   "devDependencies": {
     "@types/chokidar": "^1",
