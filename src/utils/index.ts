@@ -9,7 +9,7 @@ import { ServerHook } from '../index';
  * @param content 
  * @param httpCode 
  */
-export function response(ctx: Context, content: string | any, httpCode: number = 200) {
+export function response(ctx: any, content: string | any, httpCode: number = 200) {
     ctx.config.sendFile = true;
     ctx.body = content;
     ctx.state = httpCode;
