@@ -64,15 +64,23 @@ class CastleServer {
         this._koa.use(m);
     }
     _modules: { [index: string]: string } = {};
+    /**
+     * 模块配置
+     */
+    _modulesConfig: { [index: string]: { path: string, conf: { [index: string]: any } } } = {};
     _prefix: { [index: string]: string } = {};
     /**
-     * 
-     * @param prefix 
-     * @param path 
-     * @param hooks 
+     * 注册模块，默认会加载模块目录下的lib/hooks.js文件作为模块的启动文件
+     * @param prefix 模块前缀
+     * @param path 模块路径
+     * @param conf 模块配置 
      */
-    async module(prefix: string, path: string, hooks: { [index: string]: (ctx: any) => Promise<any> } = {}) {
+    async module(prefix: string, path: string, conf: { [index: string]: any }) {
         this._modules[prefix] = path;
+        this._modulesConfig[prefix] = {
+            path,
+            conf
+        }
         let file = join(path, 'lib/hooks.js')
         if (await exists(file)) {
             require(resolve(file));
