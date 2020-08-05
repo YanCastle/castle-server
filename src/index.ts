@@ -6,8 +6,9 @@ import outcheck from './use/outcheck';
 import { WatchType, watch } from './utils/index';
 import cors from './use/cors';
 import hook, { HookWhen } from '@ctsy/hook';
-import { exists } from 'mz/fs';
+import { exists, realpath } from 'mz/fs';
 import { join, resolve } from 'path';
+import { env } from 'process';
 const dlog = require('debug')('server')
 const pk = require(join(__dirname, '../package.json'))
 const upk = require(process.cwd() + '/package.json');
@@ -54,6 +55,8 @@ class CastleServer {
         hook.emit(ServerHook.Start, HookWhen.Before, this, { Port });
         let r = this._koa.listen(Port);
         hook.emit(ServerHook.Start, HookWhen.After, this, { Port });
+        //线上模式不开启
+        this.hot_reload();
         return;
     }
     /**
@@ -103,6 +106,16 @@ class CastleServer {
     }
     watch(file: string[], type: WatchType[], cb: Function | any) {
         watch(file, type, cb)
+    }
+    /**
+     * 开启热重载
+     */
+    hot_reload(force: boolean = false) {
+        if (env.NODE_ENV !== 'production' || force)
+            watch(['/dist/**/*.js'], [WatchType.Change, WatchType.Delete], async (file) => {
+                console.warn('clear cache:' + file)
+                delete require.cache[await realpath(file)]
+            })
     }
 }
 const server = new CastleServer()

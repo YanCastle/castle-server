@@ -3,6 +3,6 @@ const multiparty: any = require('koa2-multiparty')
 export const multi = multiparty()
 export const body = bodyparser({
     enableTypes: ['json', 'form', 'text'],
-    jsonLimit: '30mb',
-    formLimit: '30mb',
+    jsonLimit: '300mb',
+    formLimit: '300mb',
 })
