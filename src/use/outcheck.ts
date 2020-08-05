@@ -11,11 +11,11 @@ export default async function outcheck(ctx: Context, next: Function) {
         await Hook.emit(ServerHook.Outcheck, HookWhen.Error, ctx, error)
     } finally {
         if (ctx.config && !ctx.config.sendFile) {
-            if (ctx.body instanceof ReadableStream) {
+            // if (ctx.body instanceof ReadableStream) {
 
-            } else {
-                ctx.body = ctx.config && ctx.config.outcheck ? await ctx.config.outcheck(ctx) : { c: ctx.status, d: ctx.body, i: '', e: 'Not Found' };
-            }
+            // } else {
+            ctx.body = ctx.config && ctx.config.outcheck ? await ctx.config.outcheck(ctx) : { c: ctx.status, d: ctx.body, i: '', e: 'Not Found' };
+            // }
         }
     }
 }
