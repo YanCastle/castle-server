@@ -120,3 +120,11 @@ class CastleServer {
 }
 const server = new CastleServer()
 export default server;
+function exit() {
+    setTimeout(() => {
+        process.exit(0)
+    }, 1000)
+}
+process.on('SIGINT', exit)
+// Docker 退出事件
+process.on('SIGTERM', exit)
